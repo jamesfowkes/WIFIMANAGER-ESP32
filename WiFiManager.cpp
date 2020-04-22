@@ -381,6 +381,11 @@ void WiFiManager::setDebugOutput(boolean debug) {
   _debug = debug;
 }
 
+void WiFiManager::hidePassword(boolean hide)
+{
+  _hide_password = hide;
+}
+
 void WiFiManager::setAPStaticIPConfig(IPAddress ip, IPAddress gw, IPAddress sn) {
   _ap_static_ip = ip;
   _ap_static_gw = gw;
@@ -515,7 +520,15 @@ void WiFiManager::handleWifi(boolean scan) {
     }
   }
 
-  page += FPSTR(HTTP_FORM_START);
+  if (_hide_password)
+  {
+    page += FPSTR(HTTP_FORM_START_PWD);
+  }
+  else
+  {
+    page += FPSTR(HTTP_FORM_START);
+  }
+
   char parLength[2];
   // add the extra parameters to the form
   for (int i = 0; i < _paramsCount; i++) {
